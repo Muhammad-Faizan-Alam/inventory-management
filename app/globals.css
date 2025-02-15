@@ -2,20 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Table Styling */
+.table-container {
+    overflow-x: auto;
+    /* Enables horizontal scrolling on small screens */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Removes space between borders */
+    border: 1px solid #d1d5db;
+    /* Tailwind: border-gray-300 */
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.custom-table th,
+.custom-table td {
+    border: 1px solid #d1d5db;
+    padding: 10px;
+    /* Equivalent to px-4 py-2 */
+    text-align: center;
+}
+
+.custom-table thead {
+    background-color: #10b981;
+    /* Tailwind: bg-emerald-500 */
+    color: white;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #f3f4f6;
+    /* Tailwind: hover:bg-gray-100 */
 }
