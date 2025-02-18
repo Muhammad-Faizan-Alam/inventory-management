@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "axios": "^1.7.9",
     "mongoose": "^8.10.1",
     "next": "15.1.7",
     "react": "^19.0.0",

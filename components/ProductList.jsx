@@ -1,6 +1,31 @@
+'use client'
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const fetchProducts = async () => {
+  try {
+    const { data } = await axios.get("/api/product"); // ✅ Extract data correctly
+    console.log(data);
+    return data; // ✅ Returning actual data
+  } catch (error) {
+    console.error("Axios error, products fetching error:", error.response?.data || error.message);
+    return []; // ✅ Return empty array to prevent crashing
+  }
+};
 
 const ProductList = () => {
+  const [products, setProducts] = useState([]); // ✅ Store data in state
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      const data = await fetchProducts();
+      setProducts(data);
+    };
+    loadProducts();
+  }, []);
+
   return (
     <div className="table-container">
       <table className="custom-table">
@@ -14,22 +39,19 @@ const ProductList = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Product 1</td>
-            <td>Brand A</td>
-            <td>$100</td>
-            <td>10</td>
-            <td colSpan={2}>R | D</td>
-          </tr>
-          <tr>
-            <td>Product 2</td>
-            <td>Brand B</td>
-            <td>$150</td>
-            <td>5</td>
-            <td colSpan={2}>
-            <PencilSquareIcon className="w-5" />
-            </td>
-          </tr>
+          {products.map((product) => (
+            <tr key={product._id}> {/* ✅ Corrected JSX */}
+              <td>{product.name}</td>
+              <td>{product.brand}</td>
+              <td>{product.price}</td>
+              <td>{product.quantity}</td>
+              <td colSpan={2}>
+                <Link href={`/editProduct/${product._id}`}>
+                  <PencilSquareIcon />
+                </Link>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
