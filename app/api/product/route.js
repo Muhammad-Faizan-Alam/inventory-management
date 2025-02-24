@@ -25,15 +25,26 @@ export async function GET() {
     }
 }
 
+
 export async function DELETE(request) {
     try {
-        const id = request.nextURL.get("id");
+        // Extract ID from request URL
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ message: "Product ID is required" }, { status: 400 });
+        }
+
         await connectdb();
-        await Product.findByIdAndDelete(id);
-        // alert("Product Deleted");
-        return NextResponse.json({ message: "Product Deleted" }, { status: 201 });
+        const deletedProduct = await Product.findByIdAndDelete(id);
+
+        if (!deletedProduct) {
+            return NextResponse.json({ message: "Product not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
     } catch (error) {
-        // alert("Product not Deleted");
-        return NextResponse.json({ message: "Error: Product not Deleted" }, { status: 500 });
+        return NextResponse.json({ message: "Error: Product not Deleted", error: error.message }, { status: 500 });
     }
 }

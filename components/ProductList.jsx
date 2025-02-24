@@ -3,6 +3,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import RemoveProductBtn from "./removeProductBtn";
 
 const fetchProducts = async () => {
   try {
@@ -45,10 +46,12 @@ const ProductList = () => {
               <td>{product.brand}</td>
               <td>{product.price}</td>
               <td>{product.quantity}</td>
-              <td colSpan={2}>
+              <td colSpan={2} className="flex flex-wrap gap-5 justify-center items-center">
                 <Link href={`/editProduct/${product._id}`}>
-                  <PencilSquareIcon />
+                  <PencilSquareIcon className="w-5 h-5" />
                 </Link>
+
+                <RemoveProductBtn id={product._id} />
               </td>
             </tr>
           ))}
