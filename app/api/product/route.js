@@ -3,15 +3,21 @@ import Product from "@/model/product";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-    const { name, brand, price, quantity } = await request.json();
     try {
+        console.log("Incoming request...");
+        const { name, brand, price, quantity } = await request.json();
+        console.log("Received data:", { name, brand, price, quantity });
+
         await connectdb();
-        await Product.create({ name, brand, price, quantity });
-        // alert("Product Listed");
+        console.log("Connected to DB");
+
+        const newProduct = await Product.create({ name, brand, price, quantity });
+        console.log("Product created:", newProduct);
+
         return NextResponse.json({ message: "Product listed" }, { status: 201 });
     } catch (error) {
-        // alert("Product not posted");
-        return NextResponse.json({ message: "Error adding product", error }, { status: 500 });
+        console.error("Error in POST /api/product:", error);
+        return NextResponse.json({ message: "Error adding product", error: error.message }, { status: 500 });
     }
 }
 
